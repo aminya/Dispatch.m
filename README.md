@@ -15,7 +15,8 @@ function out = foo(varargin)
         @foo2, ["logical","logical"];   % dispatch based on type
         @foo3, ["numeric", "logical"];
         @foo3, ["logical", "numeric"]; % repeated method for different type
-        @foo4, ["any", "logical"]});
+        @foo4, ["any", "logical"];
+        @foo5, ["Person"]}); % dispatch on class
 
 end
 ```
@@ -38,8 +39,11 @@ end
 function out = foo4(a,b)
     out = b;
 end
+
+function out = foo5(p)
+    out = p.name;
+end
 ```
-You can't have mutiple outputs for your function. Instead return the outputs as an array or cell of outputs.
 
 Now let's test the example:
 ```matlab
@@ -58,7 +62,13 @@ ans =
 ans =
   logical
    1
->> foo({2},{2})
+
+>> p = person("Amin",25);
+>> foo(p)
+"Amin"
+
+>> foo({2},p)
+
 no method found
 ```
 

@@ -5,7 +5,8 @@ function out = foo(varargin)
         @foo2, ["logical","logical"];   % dispatch based on type
         @foo3, ["numeric", "logical"];
         @foo3, ["logical", "numeric"]; % repeated method for different type
-        @foo4, ["any", "logical"]});
+        @foo4, ["any", "logical"];
+        @foo5, ["Person"]}); % dispatch on class
 
 end
 
@@ -23,4 +24,8 @@ end
 
 function out = foo4(a,b)
     out = b;
+end
+
+function out = foo5(p)
+    out = p.name;
 end
