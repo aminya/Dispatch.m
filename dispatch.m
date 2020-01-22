@@ -1,3 +1,26 @@
+function out = dispatch(var, fun_typeOrNum)
+% performs runtime multiple dispatch for Matlab.
+% # Example
+% 
+% dispatch(varargin,...
+%     {@dog1, 1; % dispatch based on number of inputs
+%     @dog2, ["logical","logical"];   % dispatch based on type
+%     @dog3, ["numeric", "logical"];
+%     @dog3, ["logical", "numeric"]; % repeated method for different type
+%     @dog4, ["any", "logical"]})
+
+methodNum = size(fun_typeOrNum,1); 
+    for i=1:methodNum    
+        if ismethod(var, fun_typeOrNum{i,2})
+            out = fun_typeOrNum{i,1}(var{:});
+        end
+    end
+    
+    if ~exist('out','var')
+       error("no method found") 
+    end
+end
+
 
 function out = ismethod(var, numOrType)
 % find if the method is correct based on number or type of arguments.
