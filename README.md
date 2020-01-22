@@ -6,7 +6,7 @@
 - Supported for code generation
 
 
-Write a function like the following example as a template. Use `dispatch` function to invoke methods. 
+Write a function like the following example as a template. Use `dispatch` function to invoke methods.
 ```matlab
 function out = foo(varargin)
 
@@ -63,7 +63,7 @@ ans =
   logical
    1
 
->> p = person("Amin",25);
+>> p = Person("Amin",25);
 >> foo(p)
 "Amin"
 
@@ -72,3 +72,6 @@ ans =
 no method found
 ```
 
+# Note
+- You can't have mutiple outputs for your function. Instead return the outputs as an array or cell of outputs.
+- You can't dispatch on the name of the structs. Instead define simple class with just properties (See Person).
