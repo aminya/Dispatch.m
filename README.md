@@ -6,107 +6,58 @@
 - Supported for code generation
 
 
-Use `ismethod` function to invoke methods.
-
-Here is an example of a function written using `ismethod`:
+Write a function like the following example as a template. Use `dispatch` function to invoke methods. 
 ```matlab
-function out = foo(varargin)
+function out = dog(varargin)
 
-    % dispatch based on the number of inputs
-    if ismethod(varargin, 1)
-
-        out = varargin{1};
-
-    % dispatch based on the type of inputs
-
-    elseif ismethod(varargin, ["logical","logical"])
-
-        out = logical(varargin{1} && varargin{2});
-
-    elseif ismethod(varargin, ["numeric", "logical"]) || ismethod(varargin, ["logical", "numeric"])
-
-        out = varargin{1} * varargin{2};
-        
-    elseif ismethod(varargin, ["any", "logical"])
-
-        out = varargin{2};
-
-    else
-        error("no method defined")
-
-    end
+    dispatch(varargin,...
+        {@dog1, 1; % dispatch based on number of inputs
+        @dog2, ["logical","logical"];   % dispatch based on type
+        @dog3, ["numeric", "logical"];
+        @dog3, ["logical", "numeric"]; % repeated method for different type
+        @dog4, ["any", "logical"]})
 
 end
-
-
 ```
 
-```matlab
->> foo(2)
-ans =
-     2
-
->> foo(true,false)
-ans =
-  logical
-   0
->> foo(true,1)
-ans =
-     1
->> foo(false,1)
-ans =
-     0
->> foo({1}, true)
-ans =
-  logical
-   1 
-
-```
-
-You can write different functions for different methods:
+Wrtie different functions as methods. You need to return a cell if your function has multiple outputs.
 
 ```matlab
-function out = fish(varargin)
-
-    % dispatch based on the number of inputs
-    if ismethod(varargin, 1)
-
-        out = fish1(varargin{:});
-
-    % dispatch based on the type of inputs
-
-    elseif ismethod(varargin, ["logical","logical"])
-
-        out = fish2(varargin{:});
-
-    elseif ismethod(varargin, ["numeric", "logical"]) || ismethod(varargin, ["logical", "numeric"])
-
-        out = fish3(varargin{:});
-
-    elseif ismethod(varargin, ["any", "logical"])
-
-        out = fish4(varargin{:});
-
-    else
-        error("no method defined")
-
-    end
-
-end
-
-function out = fish1(a)
+function out = dog1(a)
     out = a;
 end
 
-function out = fish2(a, b)
+function out = dog2(a, b)
    out = logical(a && b);
 end
 
-function out = fish3(a, b)
+function out = dog3(a, b)
     out = a * b;
 end
 
-function out = fish4(a,b)
+function out = dog4(a,b)
     out = b;
 end
 ```
+
+Now let's test the example:
+```matlab
+>> dog(2)
+ans =
+     2
+>> dog(true, false)
+ans =
+  logical
+   0
+>> dog(2, true)
+ans =
+  logical
+   1
+>> dog({2},true)
+ans =
+  logical
+   1
+>> dog({2},{2})
+no method found
+```
+
