@@ -3,11 +3,11 @@ function out = dispatch(var, fun_typeOrNum)
 % # Example
 % 
 % put = dispatch(varargin,...
-%     {@dog1, 1; % dispatch based on number of inputs
-%     @dog2, ["logical","logical"];   % dispatch based on type
-%     @dog3, ["numeric", "logical"];
-%     @dog3, ["logical", "numeric"]; % repeated method for different type
-%     @dog4, ["any", "logical"]})
+%     {@foo1, 1; % dispatch based on number of inputs
+%     @foo2, ["logical","logical"];   % dispatch based on type
+%     @foo3, ["numeric", "logical"];
+%     @foo3, ["logical", "numeric"]; % repeated method for different type
+%     @foo4, ["any", "logical"]})
 
 methodNum = size(fun_typeOrNum,1); 
     for i=1:methodNum    
