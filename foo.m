@@ -14,7 +14,10 @@ function out = dispatch_test(varargin)
     elseif ismethod(varargin, ["numeric", "logical"]) || ismethod(varargin, ["logical", "numeric"])
 
         out = varargin{1} * varargin{2};
+        
+    elseif ismethod(varargin, ["any", "logical"])
 
+        out = varargin{2};
 
     else
         error("no method defined")
