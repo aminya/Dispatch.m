@@ -10,3 +10,9 @@ function out = ismethod(var, numOrType)
 end
 
 
+function out = isnargin(var, num)
+    % is number of var equal to num
+   out = length(var) == num;
+end
+
+
