@@ -1,11 +1,11 @@
 function out = dog(varargin)
 
-    dispatch(varargin,...
+    out = dispatch(varargin,...
         {@dog1, 1; % dispatch based on number of inputs
         @dog2, ["logical","logical"];   % dispatch based on type
         @dog3, ["numeric", "logical"];
         @dog3, ["logical", "numeric"]; % repeated method for different type
-        @dog4, ["any", "logical"]})
+        @dog4, ["any", "logical"]});
 
 end
 

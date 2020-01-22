@@ -10,17 +10,17 @@ Write a function like the following example as a template. Use `dispatch` functi
 ```matlab
 function out = dog(varargin)
 
-    dispatch(varargin,...
+    out = dispatch(varargin,...
         {@dog1, 1; % dispatch based on number of inputs
         @dog2, ["logical","logical"];   % dispatch based on type
         @dog3, ["numeric", "logical"];
         @dog3, ["logical", "numeric"]; % repeated method for different type
-        @dog4, ["any", "logical"]})
+        @dog4, ["any", "logical"]});
 
 end
 ```
 
-Wrtie different functions as methods. You need to return a cell if your function has multiple outputs.
+Wrtie different functions as methods.
 
 ```matlab
 function out = dog1(a)
@@ -39,6 +39,7 @@ function out = dog4(a,b)
     out = b;
 end
 ```
+You can't have mutiple outputs for your function. Instead return the outputs as an array or cell of outputs.
 
 Now let's test the example:
 ```matlab

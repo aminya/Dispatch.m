@@ -2,7 +2,7 @@ function out = dispatch(var, fun_typeOrNum)
 % performs runtime multiple dispatch for Matlab.
 % # Example
 % 
-% dispatch(varargin,...
+% put = dispatch(varargin,...
 %     {@dog1, 1; % dispatch based on number of inputs
 %     @dog2, ["logical","logical"];   % dispatch based on type
 %     @dog3, ["numeric", "logical"];
