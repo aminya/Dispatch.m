@@ -88,3 +88,10 @@ error: no method found
 # Note
 - You can't have multiple outputs for your function. Instead return the outputs as an array or cell of outputs.
 - You can't dispatch on the name of the structs. Instead define simple class with just properties (See Person).
+
+# License
+This is written as part of my Master's thesis and it is licensed under Apache V2, so cite this paper if you use it:
+```
+A. Yahyaabadi, P. Ferguson, ”An intelligent multi-vehicle drone testbed for space systems and remote sensing veriﬁcation,” in Canadian Aeronautics and Space Institute (CASI) ASTRO, Canada, 2019
+```
+In case of changes, either make pull requests to this repository or state the changes.

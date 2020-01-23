@@ -1,3 +1,8 @@
+% Dispatch.m
+% Runtime multiple dispatch for Matlab.
+% Apache V2 License - Copyright (c) 2020 Amin Yahyaabadi - aminyahyaabadi74@gmail.com
+% https://github.com/aminya/Dispatch.m
+
 function out = dispatch(var, methodTable)
 % performs runtime multiple dispatch for Matlab.
 % # Example
