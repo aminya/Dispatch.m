@@ -22,10 +22,10 @@ function out = foo3(a, b)
     out = a * b;
 end
 
-function out = foo4(a,b)
-    out = b;
+function out = foo4(p)
+    out = p.name;
 end
 
-function out = foo5(p)
-    out = p.name;
+function out = foo5(a,b)
+    out = b;
 end

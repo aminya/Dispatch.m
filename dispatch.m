@@ -1,23 +1,28 @@
-function out = dispatch(var, fun_typeOrNum)
+function out = dispatch(var, methodTable)
 % performs runtime multiple dispatch for Matlab.
 % # Example
-% out = dispatch(varargin,...
-%     {@foo1, 1; % dispatch based on number of inputs
+% function out = foo(varargin)
+%
+%     methodTable = {@foo1, 1;        % dispatch based on number of inputs
 %     @foo2, ["logical","logical"];   % dispatch based on type
 %     @foo3, ["numeric", "logical"];
-%     @foo3, ["logical", "numeric"]; % repeated method for different type
-%     @foo4, ["any", "logical"];
-%     @foo5, ["Person"]}); % dispatch on class
+%     @foo3, ["logical", "numeric"];  % repeated method for different type
+%     @foo4, ["Person"];              % dispatch on class
+%     @foo5, ["any", "logical"]};
+%
+%     out = dispatch(varargin, methodTable);
+%
+% end
 
-methodNum = size(fun_typeOrNum,1); 
-    for i=1:methodNum    
-        if ismethod(var, fun_typeOrNum{i,2})
-            out = fun_typeOrNum{i,1}(var{:});
+methodNum = size(methodTable,1);
+    for i=1:methodNum
+        if ismethod(var, methodTable{i,2})
+            out = methodTable{i,1}(var{:});
         end
     end
-    
+
     if ~exist('out','var')
-       error("no method found") 
+       error("no method found")
     end
 end
 
@@ -28,10 +33,10 @@ function out = ismethod(var, numOrType)
 
     if isa(numOrType, 'numeric')
         out = isnargin(var, numOrType);
-    else 
+    else
         out = isa_(var, numOrType);
     end
-    
+
 end
 
 
@@ -54,15 +59,15 @@ function out = isa_(var, type)
 
 % if number of arguments doesn't match the types, it returns false
 
-    varlen = length(var); 
+    varlen = length(var);
     typelen = length(type);
-    
+
     varisa = false(typelen,1); % uses typelen and set default to false
-    
+
     for i = 1:varlen
         varisa(i) = isa2(var{i},type{i});
     end
-    
+
     out = all(varisa);
 end
 

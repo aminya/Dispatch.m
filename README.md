@@ -6,17 +6,18 @@
 - Supported for code generation
 
 
-Write a function like the following example as a template. Use `dispatch` function to invoke methods.
+Write a function like the following example as a template. Use `dispatch(varargin, methodTable)` function to invoke methods.
 ```matlab
 function out = foo(varargin)
 
-    out = dispatch(varargin,...
-        {@foo1, 1; % dispatch based on number of inputs
-        @foo2, ["logical","logical"];   % dispatch based on type
-        @foo3, ["numeric", "logical"];
-        @foo3, ["logical", "numeric"]; % repeated method for different type
-        @foo4, ["any", "logical"];
-        @foo5, ["Person"]}); % dispatch on class
+    methodTable = {@foo1, 1;        % dispatch based on number of inputs
+    @foo2, ["logical","logical"];   % dispatch based on type
+    @foo3, ["numeric", "logical"];
+    @foo3, ["logical", "numeric"];  % repeated method for different type
+    @foo4, ["Person"];              % dispatch on class
+    @foo5, ["any", "logical"]};             
+
+    out = dispatch(varargin, methodTable);
 
 end
 ```
@@ -47,31 +48,43 @@ end
 
 Now let's test the example:
 ```matlab
+% dispatch based on number of inputs
 >> foo(2)
 ans =
      2
+```
+```matlab
+% dispatch based on type
 >> foo(true, false)
 ans =
   logical
    0
+```
+```matlab
+% dispatch based on type
 >> foo(2, true)
 ans =
   logical
    1
+```
+```matlab
+% dispatch on class
+>> p = Person("Amin",25);
+>> foo(p)
+"Amin"
+```
+```matlab
+% dispatch on any type
 >> foo({2},true)
 ans =
   logical
    1
-
->> p = Person("Amin",25);
->> foo(p)
-"Amin"
-
+```
+```matlab
 >> foo({2},p)
-
-no method found
+error: no method found
 ```
 
 # Note
-- You can't have mutiple outputs for your function. Instead return the outputs as an array or cell of outputs.
+- You can't have multiple outputs for your function. Instead return the outputs as an array or cell of outputs.
 - You can't dispatch on the name of the structs. Instead define simple class with just properties (See Person).
