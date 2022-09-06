@@ -1,10 +1,12 @@
 % Dispatch.m
 % Runtime multiple dispatch for Matlab.
-% Apache V2 License - Copyright (c) 2020 Amin Yahyaabadi - aminyahyaabadi74@gmail.com
+% Apache V2 License
+% Copyright (c) 2020 Amin Yahyaabadi, aminyahyaabadi74@gmail.com
+% Copyright (c) 2022 Gabriele Bellomia, gbellomia@live.it [multiple output] 
 % https://github.com/aminya/Dispatch.m
 %
 % # Example
-% function out = foo(varargin)
+% function varargout = foo(varargin)
 %
 %     methodTable = {@foo1, ["any"];  % dispatch based on number of inputs
 %     @foo2, ["logical","logical"];   % dispatch based on type
@@ -13,25 +15,29 @@
 %     @foo4, ["Person"];              % dispatch on class
 %     @foo5, ["any", "logical"]};
 %
-%     out = dispatch(varargin, methodTable);
+%     [varargout{1:nargout}] = dispatch(varargin, methodTable);
 %
 % end
-function out = dispatch(var, methodTable)
+function varargout = dispatch(var, methodTable)
 
-methodNum = size(methodTable,1);
+    methodNum = size(methodTable,1);
     for i=1:methodNum
         if nargcheck(var,methodTable{i,2})
             % only check types if nargin matches
             if ismethod(var, methodTable{i,2})
-                % call the unique matching method
-                out = methodTable{i,1}(var{:});
+                % call the candidate matching method
+                try % the only way I know to check for nargout match
+                    [varargout{1:nargout}] = methodTable{i,1}(var{:});
+                catch
+                    continue % there might be another method matching
+                end
+                return
             end
         end
     end
-
-    if ~exist('out','var')
-       error("no method found")
-    end
+    
+    error("no method found")
+   
 end
 
 function out = nargcheck(var, typearray)

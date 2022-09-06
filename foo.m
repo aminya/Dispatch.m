@@ -1,6 +1,6 @@
-function out = foo(varargin)
+function varargout = foo(varargin)
 
-    out = dispatch(varargin,...
+    [varargout{1:nargout}] = dispatch(varargin,...
         {@foo1,["any"];                 % dispatch based on number of inputs
         @foo2, ["logical","logical"];   % dispatch based on type
         @foo3, ["numeric", "logical"];
@@ -22,10 +22,12 @@ function out = foo3(a, b)
     out = a * b;
 end
 
-function out = foo4(p)
-    out = p.name;
+function [out1, out2] = foo4(p)
+    out1 = p.name;
+    out2 = p.age;
 end
 
-function out = foo5(a,b)
-    out = b;
+function [out1, out2] = foo5(a,b)
+    out1 = b;
+    out2 = a;
 end

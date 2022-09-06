@@ -8,7 +8,7 @@
 
 Write a function like the following example as a template. Use `dispatch(varargin, methodTable)` function to invoke methods.
 ```matlab
-function out = foo(varargin)
+function varargout = foo(varargin)
 
     methodTable = {@foo1, ["any"];  % dispatch based on number of inputs
     @foo2, ["logical","logical"];   % dispatch based on type
@@ -17,7 +17,7 @@ function out = foo(varargin)
     @foo4, ["Person"];              % dispatch on class
     @foo5, ["any", "logical"]};             
 
-    out = dispatch(varargin, methodTable);
+    [varargout{1:nargout}] = dispatch(varargin, methodTable);
 
 end
 ```
@@ -37,13 +37,14 @@ function out = foo3(a, b)
     out = a * b;
 end
 
-function out = foo4(p)
-    out = p.name;
-    out = b;
+function [out1,out2] = foo4(p)
+    out1 = p.name;
+    out2 = p.age;
 end
 
-function out = foo5(a,b)
-    out = b;
+function [out1,out2] = foo5(a,b)
+    out1 = a;
+    out2 = b;
 end
 ```
 
@@ -65,14 +66,22 @@ ans =
 % dispatch based on type
 >> foo(2, true)
 ans =
-  logical
-   1
+  2
 ```
 ```matlab
-% dispatch on class
+% dispatch on number of output args
 >> p = Person("Amin",25);
->> foo(p)
-"Amin"
+>> foo(p) % dispatches on foo1
+ans = 
+  Person with properties:
+    name: "Amin"
+     age: 25
+
+>> [a,b] = foo(p) % dispatches on foo4
+a = 
+    "Amin"
+b =
+    25
 ```
 ```matlab
 % dispatch on any type
@@ -82,12 +91,14 @@ ans =
    1
 ```
 ```matlab
+% error handling
 >> foo({2},p)
 error: no method found
 ```
 
 # Note
-- You can't have multiple outputs for your function. Instead return the outputs as an array or cell of outputs.
+- ~~You can't have multiple outputs for your function. Instead return the outputs as an array or cell of outputs.~~ FIXED by @bellomia, with a soft change in API: the top-level wrapper (`foo` in the example) has to feature the [`varargout`](https://www.mathworks.com/help/matlab/ref/varargout.html) syntax.
+
 - You can't dispatch on the name of the structs. Instead define simple class with just properties (See Person).
 
 # License
