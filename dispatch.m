@@ -2,13 +2,11 @@
 % Runtime multiple dispatch for Matlab.
 % Apache V2 License - Copyright (c) 2020 Amin Yahyaabadi - aminyahyaabadi74@gmail.com
 % https://github.com/aminya/Dispatch.m
-
-function out = dispatch(var, methodTable)
-% performs runtime multiple dispatch for Matlab.
+%
 % # Example
 % function out = foo(varargin)
 %
-%     methodTable = {@foo1, 1;        % dispatch based on number of inputs
+%     methodTable = {@foo1, ["any"];  % dispatch based on number of inputs
 %     @foo2, ["logical","logical"];   % dispatch based on type
 %     @foo3, ["numeric", "logical"];
 %     @foo3, ["logical", "numeric"];  % repeated method for different type
@@ -18,11 +16,16 @@ function out = dispatch(var, methodTable)
 %     out = dispatch(varargin, methodTable);
 %
 % end
+function out = dispatch(var, methodTable)
 
 methodNum = size(methodTable,1);
     for i=1:methodNum
-        if ismethod(var, methodTable{i,2})
-            out = methodTable{i,1}(var{:});
+        if nargcheck(var,methodTable{i,2})
+            % only check types if nargin matches
+            if ismethod(var, methodTable{i,2})
+                % call the unique matching method
+                out = methodTable{i,1}(var{:});
+            end
         end
     end
 
@@ -31,23 +34,26 @@ methodNum = size(methodTable,1);
     end
 end
 
+function out = nargcheck(var, typearray)
+% find if the method is correct based on number of passed arguments.
+% calls isnargin (TODO: probably better to inline)
 
-function out = ismethod(var, numOrType)
-% find if the method is correct based on number or type of arguments.
-% calls isnargin and isa_ accordingly
+    narg = length(typearray);
+    out = isnargin(var,narg);
 
-    if isa(numOrType, 'numeric')
-        out = isnargin(var, numOrType);
-    else
-        out = isa_(var, numOrType);
-    end
+end
+
+function out = ismethod(var, types)
+% find if the method is correct based on type of arguments.
+% calls isa_ (TODO: probably better to inline)
+
+    out = isa_(var, types);
 
 end
 
 
 function out = isnargin(var, num)
 % is number of var equal to num
-
    out = length(var) == num;
 end
 

@@ -10,7 +10,7 @@ Write a function like the following example as a template. Use `dispatch(varargi
 ```matlab
 function out = foo(varargin)
 
-    methodTable = {@foo1, 1;        % dispatch based on number of inputs
+    methodTable = {@foo1, ["any"];  % dispatch based on number of inputs
     @foo2, ["logical","logical"];   % dispatch based on type
     @foo3, ["numeric", "logical"];
     @foo3, ["logical", "numeric"];  % repeated method for different type
@@ -37,12 +37,13 @@ function out = foo3(a, b)
     out = a * b;
 end
 
-function out = foo4(a,b)
+function out = foo4(p)
+    out = p.name;
     out = b;
 end
 
-function out = foo5(p)
-    out = p.name;
+function out = foo5(a,b)
+    out = b;
 end
 ```
 

@@ -1,12 +1,12 @@
 function out = foo(varargin)
 
     out = dispatch(varargin,...
-        {@foo1, 1; % dispatch based on number of inputs
+        {@foo1,["any"];                 % dispatch based on number of inputs
         @foo2, ["logical","logical"];   % dispatch based on type
         @foo3, ["numeric", "logical"];
-        @foo3, ["logical", "numeric"]; % repeated method for different type
-        @foo4, ["any", "logical"];
-        @foo5, ["Person"]}); % dispatch on class
+        @foo3, ["logical", "numeric"];  % repeated method for different type
+        @foo4, ["Person"];              % dispatch on class
+        @foo5, ["any", "logical"]}); 
 
 end
 
